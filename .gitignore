@@ -1,9 +1,22 @@
+# Environment
 .env
+
+# Output
+output/
+
+# Python
 __pycache__/
 *.pyc
+*.pyo
+.eggs/
+*.egg-info/
 .venv/
 venv/
-output/
-*.egg-info/
 .pytest_cache/
 .ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
