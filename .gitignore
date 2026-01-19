@@ -1,6 +1,9 @@
 # Environment
 .env
 
+# Batch prompts (user-specific)
+prompts.txt
+
 # Output
 output/
 

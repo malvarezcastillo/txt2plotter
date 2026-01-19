@@ -56,7 +56,25 @@ python main.py "geometric pattern" -n 3 --seed 42
 
 # Skip prompt enhancement
 python main.py "minimalistic line drawing of a cat" --skip-enhance
+
+# Batch mode: process multiple prompts from file
+python main.py --batch prompts.txt -n 10
 ```
+
+### Batch File Format
+
+Create a `prompts.txt` file (one prompt per line, supports comments):
+
+```
+# My prompts
+"Minimalistic isometric impossible cube, thick black lines, technical drawing."
+"Single continuous line drawing of a greyhound, Picasso style."
+
+# This is also valid (no quotes)
+A geometric skull with clean vector lines
+```
+
+Output is organized by prompt: `output/<prompt_slug>/`
 
 ## Output
 
