@@ -188,16 +188,30 @@ def save_final_svg(
         prompt: Original user prompt to embed as comment.
         enhanced_prompt: Enhanced prompt to embed as comment.
     """
+    # Crop to content bounds with small margin
+    bounds = doc.bounds()
+    if bounds:
+        margin = 5.0  # 5mm margin
+        min_x, min_y, max_x, max_y = bounds
+        content_width = max_x - min_x + 2 * margin
+        content_height = max_y - min_y + 2 * margin
+        # Translate content to origin + margin
+        doc.translate(-min_x + margin, -min_y + margin)
+    else:
+        # Fallback to requested dimensions if no content
+        content_width = width_mm
+        content_height = height_mm
+
     # Convert mm to pixels (96 DPI, 1 inch = 25.4mm)
     px_per_mm = 96.0 / 25.4
-    width_px = width_mm * px_per_mm
-    height_px = height_mm * px_per_mm
+    width_px = content_width * px_per_mm
+    height_px = content_height * px_per_mm
 
     _write_svg_to_file(
         output_path,
         doc,
         page_size=(width_px, height_px),
-        center=True,
+        center=False,
     )
 
     # Post-process SVG for better Inkscape compatibility
