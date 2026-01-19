@@ -23,6 +23,7 @@ def generate_raster(
     height: int = DEFAULT_HEIGHT,
     num_inference_steps: int = 30,
     guidance_scale: float = 4.0,
+    seed: int | None = None,
 ) -> tuple[Image.Image, np.ndarray]:
     """Generate a raster image from a text prompt using Flux.2-dev (4-bit).
 
@@ -34,6 +35,7 @@ def generate_raster(
         height: Output height in pixels (must be divisible by 16).
         num_inference_steps: Number of denoising steps.
         guidance_scale: Guidance scale for generation.
+        seed: Random seed for reproducible generation (None for random).
 
     Returns:
         Tuple of (PIL Image, binary numpy array).
@@ -71,6 +73,11 @@ def generate_raster(
     )
     pipe.enable_model_cpu_offload()
 
+    # Create generator for reproducible results
+    generator = None
+    if seed is not None:
+        generator = torch.Generator(device="cpu").manual_seed(seed)
+
     # Generate
     image = pipe(
         prompt=prompt,
@@ -78,6 +85,7 @@ def generate_raster(
         height=height,
         num_inference_steps=num_inference_steps,
         guidance_scale=guidance_scale,
+        generator=generator,
     ).images[0]
 
     # Save raw output

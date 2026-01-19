@@ -48,6 +48,12 @@ python main.py "circuit board pattern" --width 297 --height 210
 # Generate multiple variations
 python main.py "mountain landscape" -n 5
 
+# Reproducible generation with seed
+python main.py "geometric pattern" --seed 42
+
+# Generate 3 reproducible variations (uses seed, seed+1, seed+2)
+python main.py "geometric pattern" -n 3 --seed 42
+
 # Skip prompt enhancement
 python main.py "minimalistic line drawing of a cat" --skip-enhance
 ```

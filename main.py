@@ -51,6 +51,12 @@ def main():
         default=1,
         help="Number of images to generate (default: 1)",
     )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Random seed for reproducible generation",
+    )
 
     args = parser.parse_args()
 
@@ -80,8 +86,13 @@ def main():
 
         # Stage 2: Raster Generation
         t0 = time.time()
-        raster, binary = generate_raster(enhanced_prompt)
-        stats["stages"]["raster"] = {"time": time.time() - t0}
+        # When using -n with seed, increment seed for each run
+        run_seed = None
+        if args.seed is not None:
+            run_seed = args.seed + i
+            print(f"      Using seed: {run_seed}")
+        raster, binary = generate_raster(enhanced_prompt, seed=run_seed)
+        stats["stages"]["raster"] = {"time": time.time() - t0, "seed": run_seed}
         print(f"[2/5] Raster generated: {binary.shape}")
 
         # Stage 3: Vectorization
