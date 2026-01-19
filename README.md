@@ -21,6 +21,13 @@ Convert text prompts to pen-plotter-ready SVG files using AI image generation an
 | ![mountain](examples/mountain_pines.svg) | ![waves](examples/waves.svg) | ![leaf](examples/leaf.svg) |
 | *"Mountain peaks with pine trees"* | *"Ocean wave pattern, Japanese style"* | *"Leaf outline with vein pattern"* |
 
+### Plotted
+
+| | |
+|:---:|:---:|
+| ![plotter overview](examples/plotted_overview.jpg) | ![cat closeup](examples/plotted_cat_closeup.jpg) |
+| *Multiple designs on the plotter* | *Cat silhouette closeup* |
+
 ## Requirements
 
 - Python 3.10+
