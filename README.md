@@ -12,21 +12,28 @@ Convert text prompts to pen-plotter-ready SVG files using AI image generation an
 
 ## Examples
 
-| | | |
-|:---:|:---:|:---:|
-| ![fox](examples/fox.svg) | ![cat](examples/cat_silhouette.svg) | ![hummingbird](examples/hummingbird.svg) |
-| *"Fox sitting, geometric style"* | *"Sitting cat silhouette"* | *"Hummingbird in flight, art nouveau"* |
-| ![jellyfish](examples/jellyfish.svg) | ![monstera](examples/monstera.svg) | ![coffee](examples/coffee_cup.svg) |
-| *"Jellyfish with flowing tentacles"* | *"Monstera leaf with holes"* | *"Steaming coffee cup"* |
-| ![mountain](examples/mountain_pines.svg) | ![waves](examples/waves.svg) | ![leaf](examples/leaf.svg) |
-| *"Mountain peaks with pine trees"* | *"Ocean wave pattern, Japanese style"* | *"Leaf outline with vein pattern"* |
+<p align="center">
+  <img src="examples/fox.svg" width="200" alt="fox">
+  <img src="examples/cat_silhouette.svg" width="200" alt="cat">
+  <img src="examples/hummingbird.svg" width="200" alt="hummingbird">
+</p>
+<p align="center">
+  <img src="examples/jellyfish.svg" width="200" alt="jellyfish">
+  <img src="examples/monstera.svg" width="200" alt="monstera">
+  <img src="examples/coffee_cup.svg" width="200" alt="coffee cup">
+</p>
+<p align="center">
+  <img src="examples/mountain_pines.svg" width="200" alt="mountain">
+  <img src="examples/waves.svg" width="200" alt="waves">
+  <img src="examples/leaf.svg" width="200" alt="leaf">
+</p>
 
 ### Plotted
 
-| | |
-|:---:|:---:|
-| ![plotter overview](examples/plotted_overview.jpg) | ![cat closeup](examples/plotted_cat_closeup.jpg) |
-| *Multiple designs on the plotter* | *Cat silhouette closeup* |
+<p align="center">
+  <img src="examples/plotted_overview.jpg" width="400" alt="plotter overview">
+  <img src="examples/plotted_cat_closeup.jpg" width="300" alt="cat closeup">
+</p>
 
 ## Requirements
 
