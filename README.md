@@ -10,6 +10,17 @@ Convert text prompts to pen-plotter-ready SVG files using AI image generation an
 4. **Optimization** - Paths are merged, simplified, and sorted for efficient plotting
 5. **Output** - Plotter-ready SVG with configurable dimensions
 
+## Examples
+
+| | | |
+|:---:|:---:|:---:|
+| ![fox](examples/fox.svg) | ![cat](examples/cat_silhouette.svg) | ![hummingbird](examples/hummingbird.svg) |
+| *"Fox sitting, geometric style"* | *"Sitting cat silhouette"* | *"Hummingbird in flight, art nouveau"* |
+| ![jellyfish](examples/jellyfish.svg) | ![monstera](examples/monstera.svg) | ![coffee](examples/coffee_cup.svg) |
+| *"Jellyfish with flowing tentacles"* | *"Monstera leaf with holes"* | *"Steaming coffee cup"* |
+| ![mountain](examples/mountain_pines.svg) | ![waves](examples/waves.svg) | ![leaf](examples/leaf.svg) |
+| *"Mountain peaks with pine trees"* | *"Ocean wave pattern, Japanese style"* | *"Leaf outline with vein pattern"* |
+
 ## Requirements
 
 - Python 3.10+
