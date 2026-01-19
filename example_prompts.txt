@@ -1,0 +1,74 @@
+# txt2svg example prompts
+# Run with: python main.py --batch example_prompts.txt -n 5
+
+# =============================================================================
+# EASY (5 prompts) - Simple shapes, basic subjects, forgiving compositions
+# =============================================================================
+
+# Paper Airplane (Easy)
+"Simple line drawing of a paper airplane, minimalist, clean black lines, white background."
+
+# Cat Silhouette (Easy)
+"Line drawing of a sitting cat silhouette, simple curves, minimalist style, black ink on white paper."
+
+# Leaf (Easy)
+"Single leaf outline with basic vein pattern, clean line art, simple botanical style, white background."
+
+# Star (Easy)
+"Five-pointed star with clean geometric lines, simple line art, black on white background."
+
+# Wave Pattern (Easy)
+"Simple ocean wave pattern, three parallel wavy lines, minimalist Japanese style, black on white."
+
+# =============================================================================
+# MEDIUM (10 prompts) - More detail, interesting subjects, some complexity
+# =============================================================================
+
+# Fox (Medium)
+"Line drawing of a fox sitting, simple geometric style, clean black lines, minimal detail, white background."
+
+# Mountain Scene (Medium)
+"Simple mountain peaks with pine trees in foreground, clean line art, black ink on white paper."
+
+# Monstera (Medium)
+"Monstera leaf with characteristic holes, bold outline with vein details, clean vector style, white background."
+
+# Hummingbird (Medium)
+"Hummingbird in flight, flowing curved lines, art nouveau inspired, simple elegance, black on white."
+
+# Jellyfish (Medium)
+"Jellyfish with flowing tentacles, graceful curves, simple line art style, black ink on white background."
+
+# Moon & Stars (Medium)
+"Crescent moon with simple star cluster, clean line drawing, mystical but minimal, black on white paper."
+
+# Coffee Cup (Medium)
+"Steaming coffee cup seen from side, curling steam wisps, simple cafe sketch style, black lines on white."
+
+# Feather (Medium)
+"Single feather with barb details, elegant curves, naturalist illustration style, clean black lines, white background."
+
+# Cactus (Medium)
+"Potted saguaro cactus, simple desert plant drawing, clean outlines with minimal spine details, black on white."
+
+# Whale (Medium)
+"Humpback whale diving, graceful body curve, simple marine illustration, clean black lines on white background."
+
+# =============================================================================
+# HARD (5 prompts) - Intricate detail, technical precision, complex patterns
+# =============================================================================
+
+# Oak Tree Etching (Hard)
+"Detailed etching of an old oak tree, vintage botanical illustration style, distinct cross-hatching, fine ink lines, high contrast."
+
+# Watch Schematic (Hard)
+"Exploded view schematic of a mechanical watch movement, gears and springs, patent drawing aesthetic, precise geometry, high contrast."
+
+# Mandala (Hard)
+"Intricate mandala with lotus petals and sacred geometry patterns, clean line art, perfectly symmetrical, zen drawing style, black ink."
+
+# Victorian House (Hard)
+"Front elevation of a Victorian house with ornate trim details, architectural blueprint style, precise linework, technical drawing aesthetic."
+
+# Sunflower Specimen (Hard)
+"Scientific illustration of a sunflower head showing seed spiral pattern, vintage engraving style, stippling and fine lines, herbarium specimen aesthetic, high contrast."

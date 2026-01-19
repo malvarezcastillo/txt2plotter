@@ -195,7 +195,7 @@ def main():
             else:
                 output_name = f"{timestamp}.svg"
             output_path = prompt_dir / output_name
-            save_final_svg(doc, output_path, args.width, args.height)
+            save_final_svg(doc, output_path, args.width, args.height, raw_prompt, enhanced_prompt)
 
             # Save stats
             stats["total_time"] = sum(s["time"] for s in stats["stages"].values())
