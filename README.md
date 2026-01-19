@@ -1,4 +1,4 @@
-# txt2svg
+# txt2plotter
 
 Convert text prompts to pen-plotter-ready SVG files using AI image generation and centerline vectorization.
 
