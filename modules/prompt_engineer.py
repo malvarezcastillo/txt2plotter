@@ -4,8 +4,6 @@ import os
 
 from openai import OpenAI
 
-from .utils import save_debug
-
 SYSTEM_PROMPT = """You rewrite user prompts for Flux.2 image generation,
 optimized for pen plotter line art output.
 
@@ -37,14 +35,15 @@ symmetrical front view, high contrast monochrome"
 Output ONLY the rewritten prompt."""
 
 
-def enhance_prompt(user_prompt: str) -> str:
+def enhance_prompt(user_prompt: str) -> tuple[str, str]:
     """Enhance a user prompt for Flux.2 line art generation.
 
     Args:
         user_prompt: The user's original prompt.
 
     Returns:
-        Enhanced prompt optimized for Flux.2 line art output.
+        Tuple of (enhanced_prompt, debug_content) where debug_content is
+        suitable for saving to the debug directory.
     """
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
@@ -65,6 +64,6 @@ def enhance_prompt(user_prompt: str) -> str:
     )
 
     enhanced = response.choices[0].message.content.strip()
-    save_debug("01_prompt_enhanced.txt", f"Original: {user_prompt}\n\nEnhanced: {enhanced}")
+    debug_content = f"Original: {user_prompt}\n\nEnhanced: {enhanced}"
 
-    return enhanced
+    return enhanced, debug_content

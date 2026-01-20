@@ -6,8 +6,6 @@ import numpy as np
 import vpype as vp
 from shapely.geometry import LineString
 
-from .utils import DEBUG_DIR
-
 
 def _write_svg_to_file(filepath: Path, doc: vp.Document, **kwargs) -> None:
     """Write vpype document to SVG file.
@@ -98,6 +96,7 @@ def optimize_paths(
     height_mm: float,
     source_width_px: int,
     source_height_px: int,
+    debug_dir: Path | None = None,
 ) -> vp.Document:
     """Optimize paths using vpype for pen plotter output.
 
@@ -113,6 +112,7 @@ def optimize_paths(
         height_mm: Target height in millimeters.
         source_width_px: Source image width in pixels.
         source_height_px: Source image height in pixels.
+        debug_dir: Directory to save debug files (None to skip debug output).
 
     Returns:
         Optimized vpype Document.
@@ -135,7 +135,8 @@ def optimize_paths(
     doc.add(lc, layer_id=1)
 
     # Save pre-optimization debug
-    _write_svg_to_file(DEBUG_DIR / "03_paths.svg", doc)
+    if debug_dir:
+        _write_svg_to_file(debug_dir / "03_paths.svg", doc)
 
     # Optimization pipeline
     # 1. Merge nearby endpoints (tolerance in mm, convert from vpype units)
@@ -165,7 +166,8 @@ def optimize_paths(
     doc.add(final_lc, layer_id=1)
 
     # Save post-optimization debug
-    _write_svg_to_file(DEBUG_DIR / "04_optimized.svg", doc)
+    if debug_dir:
+        _write_svg_to_file(debug_dir / "04_optimized.svg", doc)
 
     return doc
 

@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 from modules.optimizer import optimize_paths, save_final_svg
 from modules.prompt_engineer import enhance_prompt
 from modules.raster_generator import generate_raster
-from modules.utils import save_debug, setup_output_dirs
+from modules.utils import create_run_dir, save_debug, setup_output_dirs
 from modules.vectorizer import raster_to_paths
 
 
@@ -133,9 +133,9 @@ def main():
         t0 = time.time()
         if args.skip_enhance:
             enhanced_prompt = raw_prompt
-            save_debug("01_prompt_enhanced.txt", f"Original (no enhancement): {raw_prompt}")
+            prompt_debug_content = f"Original (no enhancement): {raw_prompt}"
         else:
-            enhanced_prompt = enhance_prompt(raw_prompt)
+            enhanced_prompt, prompt_debug_content = enhance_prompt(raw_prompt)
         prompt_time = time.time() - t0
         print(f"[1/5] Prompt: {enhanced_prompt[:80]}...")
 
@@ -156,8 +156,12 @@ def main():
                 print(f"{'='*50}")
 
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            run_dir, debug_dir = create_run_dir(timestamp, parent=prompt_dir)
             stats: dict = {"timestamp": timestamp, "prompt": raw_prompt, "run": i + 1, "stages": {}}
             stats["stages"]["prompt"] = {"time": prompt_time if i == 0 else 0}
+
+            # Save prompt debug in this run's directory
+            save_debug("01_prompt_enhanced.txt", prompt_debug_content, debug_dir)
 
             # Stage 2: Raster Generation
             t0 = time.time()
@@ -167,13 +171,13 @@ def main():
                 run_seed = args.seed + seed_offset
                 seed_offset += 1
                 print(f"      Using seed: {run_seed}")
-            raster, binary = generate_raster(enhanced_prompt, seed=run_seed)
+            raster, binary = generate_raster(enhanced_prompt, debug_dir=debug_dir, seed=run_seed)
             stats["stages"]["raster"] = {"time": time.time() - t0, "seed": run_seed}
             print(f"[2/5] Raster generated: {binary.shape}")
 
             # Stage 3: Vectorization
             t0 = time.time()
-            paths = raster_to_paths(binary)
+            paths = raster_to_paths(binary, debug_dir=debug_dir)
             stats["stages"]["vectorize"] = {
                 "time": time.time() - t0,
                 "path_count": len(paths),
@@ -184,7 +188,8 @@ def main():
             # Stage 4: Optimization
             t0 = time.time()
             doc = optimize_paths(
-                paths, args.width, args.height, binary.shape[1], binary.shape[0]
+                paths, args.width, args.height, binary.shape[1], binary.shape[0],
+                debug_dir=debug_dir
             )
             stats["stages"]["optimize"] = {"time": time.time() - t0}
             print("[4/5] Optimized paths")
@@ -193,22 +198,24 @@ def main():
             if args.output and args.count == 1 and len(prompts) == 1:
                 output_name = args.output
             else:
-                output_name = f"{timestamp}.svg"
-            output_path = prompt_dir / output_name
+                output_name = "output.svg"
+            output_path = run_dir / output_name
             save_final_svg(doc, output_path, args.width, args.height, raw_prompt, enhanced_prompt)
 
             # Save stats
             stats["total_time"] = sum(s["time"] for s in stats["stages"].values())
-            stats_filename = f"stats_{timestamp}.json"
-            save_debug(stats_filename, json.dumps(stats, indent=2))
+            save_debug("stats.json", json.dumps(stats, indent=2), debug_dir)
 
             print(f"[5/5] Saved: {output_path}")
+            print(f"      Debug files: {debug_dir}/")
             print(f"      Total time: {stats['total_time']:.1f}s")
 
     print(f"\n{'='*60}")
     print(f"Done! Generated {image_num} images.")
     if args.batch:
-        print(f"Output organized in: {output_dir}/<prompt_slug>/")
+        print(f"Output organized in: {output_dir}/<prompt_slug>/run_<timestamp>/")
+    else:
+        print(f"Output organized in: {output_dir}/run_<timestamp>/")
 
 
 if __name__ == "__main__":

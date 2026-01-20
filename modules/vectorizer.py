@@ -1,5 +1,7 @@
 """Stage 3: Vectorization - skeleton to graph to paths."""
 
+from pathlib import Path
+
 import cv2
 import networkx as nx
 import numpy as np
@@ -7,14 +9,13 @@ from PIL import Image
 from scipy import ndimage
 from skimage.morphology import skeletonize
 
-from .utils import DEBUG_DIR
 
-
-def skeletonize_image(binary: np.ndarray) -> np.ndarray:
+def skeletonize_image(binary: np.ndarray, debug_dir: Path | None = None) -> np.ndarray:
     """Skeletonize a binary image using Lee's method.
 
     Args:
         binary: Binary image array (0 and 1 values).
+        debug_dir: Directory to save debug files (None to skip debug output).
 
     Returns:
         Skeletonized image array.
@@ -23,9 +24,10 @@ def skeletonize_image(binary: np.ndarray) -> np.ndarray:
     skeleton = skeletonize(binary, method="lee")
 
     # Save debug
-    Image.fromarray((skeleton * 255).astype(np.uint8)).save(
-        DEBUG_DIR / "03_skeleton.png"
-    )
+    if debug_dir:
+        Image.fromarray((skeleton * 255).astype(np.uint8)).save(
+            debug_dir / "03_skeleton.png"
+        )
 
     return skeleton.astype(np.uint8)
 
@@ -175,14 +177,20 @@ def extract_paths(G: nx.Graph) -> list[list[tuple[float, float]]]:
     return paths
 
 
-def save_graph_debug(skeleton: np.ndarray, G: nx.Graph, filename: str) -> None:
+def save_graph_debug(
+    skeleton: np.ndarray, G: nx.Graph, filename: str, debug_dir: Path | None = None
+) -> None:
     """Save visualization with nodes (red) and edges (blue).
 
     Args:
         skeleton: Skeleton image for background.
         G: Graph to visualize.
         filename: Output filename.
+        debug_dir: Directory to save debug files (None to skip debug output).
     """
+    if not debug_dir:
+        return
+
     vis = cv2.cvtColor((skeleton * 255).astype(np.uint8), cv2.COLOR_GRAY2BGR)
 
     # Draw edges in blue
@@ -198,28 +206,31 @@ def save_graph_debug(skeleton: np.ndarray, G: nx.Graph, filename: str) -> None:
         pos = data.get("pos", (0, 0))
         cv2.circle(vis, (int(pos[0]), int(pos[1])), 3, (0, 0, 255), -1)
 
-    cv2.imwrite(str(DEBUG_DIR / filename), vis)
+    cv2.imwrite(str(debug_dir / filename), vis)
 
 
-def raster_to_paths(binary: np.ndarray) -> list[list[tuple[float, float]]]:
+def raster_to_paths(
+    binary: np.ndarray, debug_dir: Path | None = None
+) -> list[list[tuple[float, float]]]:
     """Full vectorization pipeline: binary -> skeleton -> graph -> paths.
 
     Args:
         binary: Binary image array.
+        debug_dir: Directory to save debug files (None to skip debug output).
 
     Returns:
         List of paths for SVG conversion.
     """
     # Skeletonize
-    skeleton = skeletonize_image(binary)
+    skeleton = skeletonize_image(binary, debug_dir=debug_dir)
 
     # Build graph
     G = skeleton_to_graph(skeleton)
-    save_graph_debug(skeleton, G, "03_graph_nodes.png")
+    save_graph_debug(skeleton, G, "03_graph_nodes.png", debug_dir=debug_dir)
 
     # Prune spurs
     G = prune_spurs(G, min_length=10)
-    save_graph_debug(skeleton, G, "03_graph_pruned.png")
+    save_graph_debug(skeleton, G, "03_graph_pruned.png", debug_dir=debug_dir)
 
     # Extract paths
     paths = extract_paths(G)

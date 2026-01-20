@@ -1,13 +1,13 @@
 """Stage 2: Raster image generation using Flux.2-dev (4-bit quantized)."""
 
+from pathlib import Path
+
 import numpy as np
 import torch
 from diffusers import Flux2Pipeline, Flux2Transformer2DModel
 from PIL import Image
 from skimage.filters import threshold_otsu
 from transformers import Mistral3ForConditionalGeneration
-
-from .utils import DEBUG_DIR
 
 # Default resolution (A3 proportions, divisible by 16)
 DEFAULT_WIDTH = 1344
@@ -65,6 +65,7 @@ def generate_raster(
     num_inference_steps: int = 30,
     guidance_scale: float = 4.0,
     seed: int | None = None,
+    debug_dir: Path | None = None,
 ) -> tuple[Image.Image, np.ndarray]:
     """Generate a raster image from a text prompt using Flux.2-dev (4-bit).
 
@@ -77,6 +78,7 @@ def generate_raster(
         num_inference_steps: Number of denoising steps.
         guidance_scale: Guidance scale for generation.
         seed: Random seed for reproducible generation (None for random).
+        debug_dir: Directory to save debug files (None to skip debug output).
 
     Returns:
         Tuple of (PIL Image, binary numpy array).
@@ -103,7 +105,8 @@ def generate_raster(
     ).images[0]
 
     # Save raw output
-    image.save(DEBUG_DIR / "02_raster_raw.png")
+    if debug_dir:
+        image.save(debug_dir / "02_raster_raw.png")
 
     # Convert to binary
     gray = np.array(image.convert("L"))
@@ -115,7 +118,8 @@ def generate_raster(
         binary = 1 - binary
 
     # Save binary
-    Image.fromarray(binary * 255).save(DEBUG_DIR / "02_raster_binary.png")
+    if debug_dir:
+        Image.fromarray(binary * 255).save(debug_dir / "02_raster_binary.png")
 
     # Validate - check if image is not blank
     if np.sum(binary) < 0.01 * binary.size:
