@@ -3,13 +3,8 @@ name = "txt2svg"
 version = "0.1.0"
 requires-python = ">=3.10"
 dependencies = [
-    "torch",
-    "diffusers",
-    "transformers",
-    "accelerate",
-    "sentencepiece",
-    "protobuf",
-    "bitsandbytes",
+    "fal-client",
+    "requests",
     "scikit-image",
     "opencv-python",
     "numpy",
@@ -24,6 +19,15 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest",
+]
+local-gpu = [
+    "torch",
+    "diffusers",
+    "transformers",
+    "accelerate",
+    "sentencepiece",
+    "protobuf",
+    "bitsandbytes",
 ]
 
 [tool.setuptools.packages.find]

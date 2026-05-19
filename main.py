@@ -102,6 +102,11 @@ def main():
         default=None,
         help="Path to file containing prompts (one per line)",
     )
+    parser.add_argument(
+        "--local-flux",
+        action="store_true",
+        help="Use local 4-bit Flux.2-dev instead of fal.ai (requires 24GB GPU and [local-gpu] extras)",
+    )
 
     args = parser.parse_args()
 
@@ -171,7 +176,10 @@ def main():
                 run_seed = args.seed + seed_offset
                 seed_offset += 1
                 print(f"      Using seed: {run_seed}")
-            raster, binary = generate_raster(enhanced_prompt, debug_dir=debug_dir, seed=run_seed)
+            backend = "local" if args.local_flux else "fal"
+            raster, binary = generate_raster(
+                enhanced_prompt, debug_dir=debug_dir, seed=run_seed, backend=backend
+            )
             stats["stages"]["raster"] = {"time": time.time() - t0, "seed": run_seed}
             print(f"[2/5] Raster generated: {binary.shape}")
 
